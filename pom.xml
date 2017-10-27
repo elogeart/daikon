@@ -29,6 +29,7 @@
         <module>daikon-content-service</module>
         <module>daikon-logging</module>
         <module>daikon-tql</module>
+        <module>daikon-messages</module>
     </modules>
     <scm>
         <connection>scm:git:https://github.com/Talend/daikon.git</connection>
