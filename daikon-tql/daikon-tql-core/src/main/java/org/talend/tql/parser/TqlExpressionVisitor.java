@@ -161,7 +161,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     public TqlElement visitFieldContains(TqlParser.FieldContainsContext ctx) {
         LOG.debug("Visit field contains: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
+        TqlElement fieldName = field.accept(this);
         TerminalNode valueNode = ctx.getChild(TerminalNode.class, 2);
 
         if (valueNode instanceof ErrorNode)
@@ -169,7 +169,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
 
         String quotedValue = valueNode.getSymbol().getText();
         String value = quotedValue.substring(1, quotedValue.length() - 1);
-        FieldContainsExpression fieldContainsExpression = new FieldContainsExpression(new FieldReference(fieldName), value);
+        FieldContainsExpression fieldContainsExpression = new FieldContainsExpression(fieldName, value);
         LOG.debug("End visit field contains: " + ctx.getText());
         return fieldContainsExpression;
     }
@@ -178,7 +178,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     public TqlElement visitFieldMatchesRegexp(TqlParser.FieldMatchesRegexpContext ctx) {
         LOG.debug("Visit field matches: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
+        TqlElement fieldName = field.accept(this);
         TerminalNode regexNode = ctx.getChild(TerminalNode.class, 2);
 
         if (regexNode instanceof ErrorNode)
@@ -186,7 +186,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
 
         String quotedRegex = regexNode.getSymbol().getText();
         String regex = quotedRegex.substring(1, quotedRegex.length() - 1);
-        FieldMatchesRegex fieldMatchesRegex = new FieldMatchesRegex(new FieldReference(fieldName), regex);
+        FieldMatchesRegex fieldMatchesRegex = new FieldMatchesRegex(fieldName, regex);
         LOG.debug("End visit field matches: " + ctx.getText());
         return fieldMatchesRegex;
     }
@@ -195,7 +195,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     public TqlElement visitFieldCompliesPattern(TqlParser.FieldCompliesPatternContext ctx) {
         LOG.debug("Visit field complies: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
+        TqlElement fieldName = field.accept(this);
         TerminalNode patternNode = ctx.getChild(TerminalNode.class, 2);
 
         if (patternNode instanceof ErrorNode)
@@ -203,7 +203,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
 
         String quotedPattern = patternNode.getSymbol().getText();
         String pattern = quotedPattern.substring(1, quotedPattern.length() - 1);
-        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(new FieldReference(fieldName), pattern);
+        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(fieldName, pattern);
         LOG.debug("End visit field complies: " + ctx.getText());
         return fieldCompliesPattern;
     }
@@ -212,7 +212,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     public TqlElement visitFieldBetween(TqlParser.FieldBetweenContext ctx) {
         LOG.debug("Visit field between: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
+        TqlElement fieldName = field.accept(this);
         TqlParser.LiteralValueContext value1Node = ctx.getChild(TqlParser.LiteralValueContext.class, 0);
         TqlParser.LiteralValueContext value2Node = ctx.getChild(TqlParser.LiteralValueContext.class, 1);
         LiteralValue v1 = (LiteralValue) value1Node.accept(this);
@@ -220,7 +220,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         String lowerBound = ctx.getChild(TerminalNode.class, 2).getSymbol().getText();
         String upperBound = ctx.getChild(TerminalNode.class, 4).getSymbol().getText();
 
-        FieldBetweenExpression fieldBetween = new FieldBetweenExpression(new FieldReference(fieldName), v1, v2,
+        FieldBetweenExpression fieldBetween = new FieldBetweenExpression(fieldName, v1, v2,
                 "]".equals(lowerBound), "[".equals(upperBound));
         LOG.debug("End visit field between: " + ctx.getText());
         return fieldBetween;
@@ -230,12 +230,12 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     public TqlElement visitFieldIn(TqlParser.FieldInContext ctx) {
         LOG.debug("Visit field in: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
+        TqlElement fieldName = field.accept(this);
         // All children which are not terminal values are the needed literal values (see syntax)
         LiteralValue[] literalValues = ctx.children.stream().filter(c -> c instanceof TqlParser.LiteralValueContext
                 || c instanceof TqlParser.BooleanValueContext || c instanceof ErrorNode).map(c -> (LiteralValue) c.accept(this))
                 .toArray(LiteralValue[]::new);
-        FieldInExpression fieldIn = new FieldInExpression(new FieldReference(fieldName), literalValues);
+        FieldInExpression fieldIn = new FieldInExpression(fieldName, literalValues);
         LOG.debug("End visit field in: " + ctx.getText());
         return fieldIn;
     }
