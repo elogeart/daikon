@@ -132,7 +132,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         LOG.debug("Visit is field empty expression: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
         String fieldName = field.getSymbol().getText();
-        FieldIsEmptyExpression isEmptyExpression = new FieldIsEmptyExpression(fieldName);
+        FieldIsEmptyExpression isEmptyExpression = new FieldIsEmptyExpression(new FieldReference(fieldName));
         LOG.debug("End visit is field empty expression: " + ctx.getText());
         return isEmptyExpression;
     }
@@ -142,7 +142,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         LOG.debug("Visit is field valid expression: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
         String fieldName = field.getSymbol().getText();
-        FieldIsValidExpression isValidExpression = new FieldIsValidExpression(fieldName);
+        FieldIsValidExpression isValidExpression = new FieldIsValidExpression(new FieldReference(fieldName));
         LOG.debug("End visit is field valid expression: " + ctx.getText());
         return isValidExpression;
     }
@@ -152,7 +152,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         LOG.debug("Visit is field invalid expression: " + ctx.getText());
         TerminalNode field = ctx.getChild(TerminalNode.class, 0);
         String fieldName = field.getSymbol().getText();
-        FieldIsInvalidExpression isInvalidExpression = new FieldIsInvalidExpression(fieldName);
+        FieldIsInvalidExpression isInvalidExpression = new FieldIsInvalidExpression(new FieldReference(fieldName));
         LOG.debug("End visit is field invalid expression: " + ctx.getText());
         return isInvalidExpression;
     }
@@ -169,7 +169,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
 
         String quotedValue = valueNode.getSymbol().getText();
         String value = quotedValue.substring(1, quotedValue.length() - 1);
-        FieldContainsExpression fieldContainsExpression = new FieldContainsExpression(fieldName, value);
+        FieldContainsExpression fieldContainsExpression = new FieldContainsExpression(new FieldReference(fieldName), value);
         LOG.debug("End visit field contains: " + ctx.getText());
         return fieldContainsExpression;
     }
@@ -186,7 +186,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
 
         String quotedRegex = regexNode.getSymbol().getText();
         String regex = quotedRegex.substring(1, quotedRegex.length() - 1);
-        FieldMatchesRegex fieldMatchesRegex = new FieldMatchesRegex(fieldName, regex);
+        FieldMatchesRegex fieldMatchesRegex = new FieldMatchesRegex(new FieldReference(fieldName), regex);
         LOG.debug("End visit field matches: " + ctx.getText());
         return fieldMatchesRegex;
     }
@@ -203,7 +203,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
 
         String quotedPattern = patternNode.getSymbol().getText();
         String pattern = quotedPattern.substring(1, quotedPattern.length() - 1);
-        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(fieldName, pattern);
+        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(new FieldReference(fieldName), pattern);
         LOG.debug("End visit field complies: " + ctx.getText());
         return fieldCompliesPattern;
     }
@@ -220,8 +220,8 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         String lowerBound = ctx.getChild(TerminalNode.class, 2).getSymbol().getText();
         String upperBound = ctx.getChild(TerminalNode.class, 4).getSymbol().getText();
 
-        FieldBetweenExpression fieldBetween = new FieldBetweenExpression(fieldName, v1, v2, "]".equals(lowerBound),
-                "[".equals(upperBound));
+        FieldBetweenExpression fieldBetween = new FieldBetweenExpression(new FieldReference(fieldName), v1, v2,
+                "]".equals(lowerBound), "[".equals(upperBound));
         LOG.debug("End visit field between: " + ctx.getText());
         return fieldBetween;
     }
@@ -235,7 +235,7 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         LiteralValue[] literalValues = ctx.children.stream().filter(c -> c instanceof TqlParser.LiteralValueContext
                 || c instanceof TqlParser.BooleanValueContext || c instanceof ErrorNode).map(c -> (LiteralValue) c.accept(this))
                 .toArray(LiteralValue[]::new);
-        FieldInExpression fieldIn = new FieldInExpression(fieldName, literalValues);
+        FieldInExpression fieldIn = new FieldInExpression(new FieldReference(fieldName), literalValues);
         LOG.debug("End visit field in: " + ctx.getText());
         return fieldIn;
     }

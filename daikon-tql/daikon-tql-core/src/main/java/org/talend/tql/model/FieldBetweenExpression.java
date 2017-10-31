@@ -11,7 +11,7 @@ import org.talend.tql.visitor.IASTVisitor;
  */
 public class FieldBetweenExpression implements Atom {
 
-    private final String fieldName;
+    private final TqlElement field;
 
     private final LiteralValue left;
 
@@ -21,17 +21,17 @@ public class FieldBetweenExpression implements Atom {
 
     private final boolean isUpperOpen;
 
-    public FieldBetweenExpression(String fieldName, LiteralValue left, LiteralValue right, boolean isLowerOpen,
+    public FieldBetweenExpression(TqlElement field, LiteralValue left, LiteralValue right, boolean isLowerOpen,
             boolean isUpperOpen) {
-        this.fieldName = fieldName;
+        this.field = field;
         this.left = left;
         this.right = right;
         this.isLowerOpen = isLowerOpen;
         this.isUpperOpen = isUpperOpen;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public TqlElement getField() {
+        return field;
     }
 
     public LiteralValue getLeft() {
@@ -52,8 +52,8 @@ public class FieldBetweenExpression implements Atom {
 
     @Override
     public String toString() {
-        return "FieldBetweenExpression{" + "fieldName='" + fieldName + '\'' + ", left=" + left + ", right=" + right
-                + ", isLowerOpen=" + isLowerOpen + ", isUpperOpen=" + isUpperOpen + '}';
+        return "FieldBetweenExpression{" + "field='" + field + '\'' + ", left=" + left + ", right=" + right + ", isLowerOpen="
+                + isLowerOpen + ", isUpperOpen=" + isUpperOpen + '}';
     }
 
     @Override

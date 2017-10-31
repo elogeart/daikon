@@ -132,7 +132,7 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldInExpression elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        String fieldName = (String) elt.getField().accept(this);
         LiteralValue[] valueNodes = elt.getValues();
         List<Object> values = Arrays.stream(valueNodes).map(e -> {
             try {
@@ -148,7 +148,7 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldIsEmptyExpression elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        String fieldName = (String) elt.getField().accept(this);
         if (!isNegation) {
             return new Criteria().orOperator(Criteria.where(fieldName).is(""), Criteria.where(fieldName).is(null));
         }
@@ -167,7 +167,7 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldMatchesRegex elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        String fieldName = (String) elt.getField().accept(this);
         String regex = elt.getRegex();
         if (StringUtils.isEmpty(regex)) {
             if (!isNegation)
@@ -183,7 +183,7 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldCompliesPattern elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        String fieldName = (String) elt.getField().accept(this);
         String pattern = elt.getPattern();
         if (StringUtils.isEmpty(pattern)) {
             if (!isNegation)
@@ -199,7 +199,7 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldContainsExpression elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        String fieldName = (String) elt.getField().accept(this);
         String value = elt.getValue();
         if (!isNegation)
             return Criteria.where(fieldName).regex(value);
@@ -213,7 +213,7 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldBetweenExpression elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        String fieldName = (String) elt.getField().accept(this);
         LiteralValue left = elt.getLeft();
         Object leftValue = left.accept(this);
         LiteralValue right = elt.getRight();
