@@ -241,15 +241,10 @@ public class ASTVisitor implements IASTVisitor<Object> {
     public Criteria visit(NotExpression elt) {
         Expression expression = elt.getExpression();
         // Negate sub-tree
-        boolean previousNegationState = this.isNegation;
-        this.isNegation = true;
-        Criteria c;
-        try {
-            c = (Criteria) expression.accept(this);
-        } finally {
-            // Reset negation
-            this.isNegation = previousNegationState;
-        }
+        this.isNegation = !this.isNegation;
+        Criteria c = (Criteria) expression.accept(this);
+        // Reset negation
+        this.isNegation = !this.isNegation;
 
         return c;
     }
