@@ -17,11 +17,17 @@ public class FieldBetweenExpression implements Atom {
 
     private final LiteralValue right;
 
-    public FieldBetweenExpression(String fieldName, LiteralValue left, LiteralValue right) {
+    private final boolean isLowerOpen;
+
+    private final boolean isUpperOpen;
+
+    public FieldBetweenExpression(String fieldName, LiteralValue left, LiteralValue right, boolean isLowerOpen,
+            boolean isUpperOpen) {
         this.fieldName = fieldName;
         this.left = left;
         this.right = right;
-
+        this.isLowerOpen = isLowerOpen;
+        this.isUpperOpen = isUpperOpen;
     }
 
     public String getFieldName() {
@@ -36,10 +42,18 @@ public class FieldBetweenExpression implements Atom {
         return right;
     }
 
+    public boolean isLowerOpen() {
+        return isLowerOpen;
+    }
+
+    public boolean isUpperOpen() {
+        return isUpperOpen;
+    }
+
     @Override
     public String toString() {
-        return "FieldBetweenExpression{" + "fieldName='" + fieldName + '\'' + ", left='" + left + '\'' + ", right='" + right
-                + '\'' + '}';
+        return "FieldBetweenExpression{" + "fieldName='" + fieldName + '\'' + ", left=" + left + ", right=" + right
+                + ", isLowerOpen=" + isLowerOpen + ", isUpperOpen=" + isUpperOpen + '}';
     }
 
     @Override

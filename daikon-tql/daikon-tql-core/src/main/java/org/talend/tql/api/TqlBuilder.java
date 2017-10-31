@@ -803,7 +803,7 @@ public class TqlBuilder {
         // Creating simple between expression
         LiteralValue left = new LiteralValue(litteralType, value1);
         LiteralValue right = new LiteralValue(litteralType, value2);
-        FieldBetweenExpression fieldBetweenExpression = new FieldBetweenExpression(fieldname, left, right);
+        FieldBetweenExpression fieldBetweenExpression = new FieldBetweenExpression(fieldname, left, right, false, false);
         Expression[] fieldBetweenExpressions = new Expression[] { fieldBetweenExpression };
 
         // Adding it to a new AST

@@ -217,7 +217,11 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
         TqlParser.LiteralValueContext value2Node = ctx.getChild(TqlParser.LiteralValueContext.class, 1);
         LiteralValue v1 = (LiteralValue) value1Node.accept(this);
         LiteralValue v2 = (LiteralValue) value2Node.accept(this);
-        FieldBetweenExpression fieldBetween = new FieldBetweenExpression(fieldName, v1, v2);
+        String lowerBound = ctx.getChild(TerminalNode.class, 2).getSymbol().getText();
+        String upperBound = ctx.getChild(TerminalNode.class, 4).getSymbol().getText();
+
+        FieldBetweenExpression fieldBetween = new FieldBetweenExpression(fieldName, v1, v2, "]".equals(lowerBound),
+                "[".equals(upperBound));
         LOG.debug("End visit field between: " + ctx.getText());
         return fieldBetween;
     }
