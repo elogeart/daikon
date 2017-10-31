@@ -219,19 +219,37 @@ public class ASTVisitor implements IASTVisitor<Object> {
         LiteralValue right = elt.getRight();
         Object rightValue = right.accept(this);
 
-        if (!isNegation)
-            return Criteria.where(fieldName).gte(leftValue).lt(rightValue);
-        return new Criteria().orOperator(Criteria.where(fieldName).lt(leftValue), Criteria.where(fieldName).gte(rightValue));
+        Criteria criteria = Criteria.where(fieldName);
+        if (elt.isLowerOpen()) {
+            criteria = criteria.gt(leftValue);
+        } else {
+            criteria = criteria.gte(leftValue);
+        }
+        if (elt.isUpperOpen()) {
+            criteria = criteria.lt(rightValue);
+        } else {
+            criteria = criteria.lte(rightValue);
+        }
+
+        if (isNegation) {
+            criteria = criteria.not();
+        }
+        return criteria;
     }
 
     @Override
     public Criteria visit(NotExpression elt) {
         Expression expression = elt.getExpression();
         // Negate sub-tree
-        this.isNegation = !this.isNegation;
-        Criteria c = (Criteria) expression.accept(this);
-        // Reset negation
-        this.isNegation = !this.isNegation;
+        boolean previousNegationState = this.isNegation;
+        this.isNegation = true;
+        Criteria c;
+        try {
+            c = (Criteria) expression.accept(this);
+        } finally {
+            // Reset negation
+            this.isNegation = previousNegationState;
+        }
 
         return c;
     }

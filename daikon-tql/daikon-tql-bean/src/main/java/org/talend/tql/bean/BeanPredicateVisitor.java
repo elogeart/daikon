@@ -352,7 +352,19 @@ public class BeanPredicateVisitor<T> implements IASTVisitor<Predicate<T>> {
         fieldBetweenExpression.getRight().accept(this);
         final String right = literals.pop();
         final String left = literals.pop();
-        return gt(left, method).and(lt(right, method));
+
+        Predicate<T> predicate;
+        if (fieldBetweenExpression.isLowerOpen()) {
+            predicate = gt(left, method);
+        } else {
+            predicate = gte(left, method);
+        }
+        if (fieldBetweenExpression.isUpperOpen()) {
+            predicate = predicate.and(lt(right, method));
+        } else {
+            predicate = predicate.and(lte(right, method));
+        }
+        return predicate;
     }
 
     @Override
