@@ -47,7 +47,7 @@ public class TestTqlParser_Complex extends TestTqlParser_Abstract {
     public void testParseFieldIsValid() throws Exception {
         TqlElement tqlElement = doTest("field1 is valid");
         String expected = "OrExpression{expressions=[AndExpression{expressions=["
-                + "FieldIsValidExpression{fieldName='field1'}]}]}";
+                + "FieldIsValidExpression{field=FieldReference{path='field1'}}]}]}";
         Assert.assertEquals(expected, tqlElement.toString());
     }
 
@@ -55,7 +55,7 @@ public class TestTqlParser_Complex extends TestTqlParser_Abstract {
     public void testParseFieldIsInvalid() throws Exception {
         TqlElement tqlElement = doTest("field1 is invalid");
         String expected = "OrExpression{expressions=[AndExpression{expressions=["
-                + "FieldIsInvalidExpression{fieldName='field1'}]}]}";
+                + "FieldIsInvalidExpression{field=FieldReference{path='field1'}}]}]}";
         Assert.assertEquals(expected, tqlElement.toString());
     }
 
@@ -63,7 +63,7 @@ public class TestTqlParser_Complex extends TestTqlParser_Abstract {
     public void testParseFieldCompliesPattern() throws Exception {
         TqlElement tqlElement = doTest("field1 complies 'value1'");
         String expected = "OrExpression{expressions=[AndExpression{expressions=["
-                + "FieldCompliesPattern{fieldName='field1', pattern='value1'}]}]}";
+                + "FieldCompliesPattern{field=FieldReference{path='field1'}, pattern='value1'}]}]}";
         Assert.assertEquals(expected, tqlElement.toString());
     }
 

@@ -325,7 +325,7 @@ public class TqlBuilder {
     public static Expression complies(String fieldname, String pattern) {
 
         // Creating simple complies expression
-        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(fieldname, pattern);
+        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(new FieldReference(fieldname), pattern);
         Expression[] fieldCompliesPatternExpressions = new Expression[] { fieldCompliesPattern };
 
         // Adding it to a new AST
@@ -380,7 +380,7 @@ public class TqlBuilder {
     public static Expression isInvalid(String fieldname) {
 
         // Creating simple isInvalid expression
-        FieldIsInvalidExpression fieldIsInvalidExpression = new FieldIsInvalidExpression(fieldname);
+        FieldIsInvalidExpression fieldIsInvalidExpression = new FieldIsInvalidExpression(new FieldReference(fieldname));
         Expression[] fieldIsInvalidExpressions = new Expression[] { fieldIsInvalidExpression };
 
         // Adding it to a new AST
@@ -398,7 +398,7 @@ public class TqlBuilder {
     public static Expression isValid(String fieldname) {
 
         // Creating simple isValid expression
-        FieldIsValidExpression fieldIsValidExpression = new FieldIsValidExpression(fieldname);
+        FieldIsValidExpression fieldIsValidExpression = new FieldIsValidExpression(new FieldReference(fieldname));
         Expression[] fieldIsValidExpressions = new Expression[] { fieldIsValidExpression };
 
         // Adding it to a new AST

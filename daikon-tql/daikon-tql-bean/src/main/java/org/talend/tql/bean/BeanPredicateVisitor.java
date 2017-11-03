@@ -340,8 +340,20 @@ public class BeanPredicateVisitor<T> implements IASTVisitor<Predicate<T>> {
 
     @Override
     public Predicate<T> visit(FieldCompliesPattern fieldCompliesPattern) {
-        final Method[] methods = getMethods(fieldCompliesPattern.getFieldName());
+        fieldCompliesPattern.getField().accept(this);
         final String pattern = fieldCompliesPattern.getPattern();
+        if (!currentMethods.isEmpty()) {
+            Predicate<T> predicate = getFieldCompliesPredicate(currentMethods.pop(), pattern);
+            while (!currentMethods.isEmpty()) {
+                predicate = predicate.or(getFieldCompliesPredicate(currentMethods.pop(), pattern));
+            }
+            return predicate;
+        } else {
+            return o -> true;
+        }
+    }
+
+    private Predicate<T> getFieldCompliesPredicate(Method[] methods, String pattern) {
         return unchecked(o -> complies(valueOf(invoke(o, methods)), pattern));
     }
 

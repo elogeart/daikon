@@ -140,9 +140,8 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     @Override
     public TqlElement visitFieldIsValid(TqlParser.FieldIsValidContext ctx) {
         LOG.debug("Visit is field valid expression: " + ctx.getText());
-        TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
-        FieldIsValidExpression isValidExpression = new FieldIsValidExpression(fieldName);
+        TqlElement field = ctx.getChild(0).accept(this);
+        FieldIsValidExpression isValidExpression = new FieldIsValidExpression(field);
         LOG.debug("End visit is field valid expression: " + ctx.getText());
         return isValidExpression;
     }
@@ -150,9 +149,8 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     @Override
     public TqlElement visitFieldIsInvalid(TqlParser.FieldIsInvalidContext ctx) {
         LOG.debug("Visit is field invalid expression: " + ctx.getText());
-        TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
-        FieldIsInvalidExpression isInvalidExpression = new FieldIsInvalidExpression(fieldName);
+        TqlElement field = ctx.getChild(0).accept(this);
+        FieldIsInvalidExpression isInvalidExpression = new FieldIsInvalidExpression(field);
         LOG.debug("End visit is field invalid expression: " + ctx.getText());
         return isInvalidExpression;
     }
@@ -194,16 +192,20 @@ public class TqlExpressionVisitor implements TqlParserVisitor<TqlElement> {
     @Override
     public TqlElement visitFieldCompliesPattern(TqlParser.FieldCompliesPatternContext ctx) {
         LOG.debug("Visit field complies: " + ctx.getText());
-        TerminalNode field = ctx.getChild(TerminalNode.class, 0);
-        String fieldName = field.getSymbol().getText();
-        TerminalNode patternNode = ctx.getChild(TerminalNode.class, 2);
+        TqlElement field = ctx.getChild(0).accept(this);
+        TerminalNode patternNode;
+        if (field instanceof AllFields) {
+            patternNode = ctx.getChild(TerminalNode.class, 1);
+        } else {
+            patternNode = ctx.getChild(TerminalNode.class, 2);
+        }
 
         if (patternNode instanceof ErrorNode)
             throw new TqlException(patternNode.getText());
 
         String quotedPattern = patternNode.getSymbol().getText();
         String pattern = quotedPattern.substring(1, quotedPattern.length() - 1);
-        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(fieldName, pattern);
+        FieldCompliesPattern fieldCompliesPattern = new FieldCompliesPattern(field, pattern);
         LOG.debug("End visit field complies: " + ctx.getText());
         return fieldCompliesPattern;
     }

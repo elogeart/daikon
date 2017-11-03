@@ -183,7 +183,9 @@ public class ASTVisitor implements IASTVisitor<Object> {
 
     @Override
     public Object visit(FieldCompliesPattern elt) {
-        String fieldName = getFieldName(elt.getFieldName());
+        TqlElement field = elt.getField();
+        String f = (String) field.accept(this);
+        String fieldName = getFieldName(f);
         String pattern = elt.getPattern();
         if (StringUtils.isEmpty(pattern)) {
             if (!isNegation)
