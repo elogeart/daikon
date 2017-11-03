@@ -25,6 +25,9 @@ _Modules_                                               |_Description_
 [reporting](reporting)                                  |*Internal module used to aggregate jacoco converage reports and send them to codacy during the deploy phase*
 
 
+## Release TQL Javascript module
+
+To publish on npm repository the TQL module on a release of daikon use the maven profile npm.
 
 ## Support
 

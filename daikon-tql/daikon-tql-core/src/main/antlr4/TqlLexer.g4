@@ -2,10 +2,6 @@
 
 lexer grammar TqlLexer;
 
-@header {
-package org.talend.tql;
-}
-
 /**
  * Tokens
  **/
@@ -38,6 +34,7 @@ MATCHES : '~';
 COMPLIES : 'complies';
 BETWEEN : 'between';
 IN : 'in';
+ALL_FIELDS: '*';
 FIELD_REFERENCE: 'field';
 
 // special values
