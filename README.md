@@ -12,16 +12,17 @@ http://www.talend.com
 
 This repository contains commonly used classes that are expected to be shared across all Talend products.
 here is the folder description:
-|_Module_                                                |_Description_                             |
-|:-------------------------------------------------------|------------------------------------------|
-|[daikon](daikon)                                        |*The core library with a restricted set of dependencies. It contains Avro, i18n, Properties, UI-specs, Exception, Sandbox classloader handling classes among things*|
-|[daikon-content-service](daikon-content-service)        |*Spring Abstraction for handling content resources on multiple filesystem like local or S3*|
-|[daikon-logging](daikon-logging)                        |*Json Layout for all loggers to used for cloud projects and it's associated documentation*|
-|[daikon-service](daikon-service)                        |*Provides spring services utilities such as abstracting the access to local or remote service and Enuciate documentation generation*|
-|[daikon-spring](daikon-spring)                          |*Spring specific classes that can be shared by projects, like multitenant for mongoDB or @RequiresAuthority for simple permission check. *|
-|[daikon-tql](daikon-tql)                                |*Talend Query Language, simple query language for java and javascript with a MongoDB implementation*|
-|[poc](poc)                                              |*module use to store experiments and POCs like the CQRS one*|
-|[reporting](reporting)                                  |*Internal module used to aggregate jacoco converage reports and send them to codacy during the deploy phase*|
+
+_Modules_                                               |_Description_                             
+-------------------------------------------------------|------------------------------------------
+[daikon](daikon)                                        |*The core library with a restricted set of dependencies. It contains Avro, i18n, Properties, UI-specs, Exception, Sandbox classloader handling classes among things* 
+[daikon-content-service](daikon-content-service)        |*Spring Abstraction for handling content resources on multiple filesystem like local or S3*
+[daikon-logging](daikon-logging)                        |*Json Layout for all loggers to used for cloud projects and it's associated documentation*
+[daikon-service](daikon-service)                        |*Provides spring services utilities such as abstracting the access to local or remote service and Enuciate documentation generation*
+[daikon-spring](daikon-spring)                          |*Spring specific classes that can be shared by projects, like multitenant for mongoDB or @RequiresAuthority for simple permission check*
+[daikon-tql](daikon-tql)                                |*Talend Query Language, simple query language for java and javascript with a MongoDB implementation*
+[poc](poc)                                              |*module use to store experiments and POCs like the CQRS one*
+[reporting](reporting)                                  |*Internal module used to aggregate jacoco converage reports and send them to codacy during the deploy phase*
 
 
 
